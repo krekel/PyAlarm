@@ -12,7 +12,7 @@ def main():
     parser.add_argument('mode', choices=['alarm', 'random'],
                         help='Choose a mode. Alarm mode works only with 24hr format')
     parser.add_argument('hour', type=validate, nargs='?', default='00')
-    parser.add_argument('minutes', nargs='?', default='00')
+    parser.add_argument('minutes', type=validate, nargs='?', default='00')
     parser.add_argument('--span', type=int, nargs='?', const=2, help='Random Mode: Set time span in hours')
     args = parser.parse_args()
     print(args)
@@ -53,11 +53,8 @@ def open_browser(input_time):
 
 
 def validate(value):
-    regex = re.compile(r'^[0-2][0-9]$|^[0-2][0-6]$')
-
-    if regex.search(value) is None:
-        raise argparse.ArgumentTypeError("hour must match the following pattern [0-2][0-9]")
-
+    time.strptime(value, '%H')
+    time.strptime(value, '%M')
     return value
 
 
